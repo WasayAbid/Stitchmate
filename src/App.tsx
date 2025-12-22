@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { DesignProvider } from "@/contexts/DesignContext";
 
 // Pages
 import Index from "./pages/Index";
@@ -18,6 +19,9 @@ import AIDesign from "./pages/user/AIDesign";
 import VirtualTryOn from "./pages/user/VirtualTryOn";
 import AccessoriesMarketplace from "./pages/user/AccessoriesMarketplace";
 import MyOrders from "./pages/user/MyOrders";
+import ChatbotAssistant from "./pages/user/ChatbotAssistant";
+import UserProfile from "./pages/user/UserProfile";
+import MarketplaceBidding from "./pages/user/MarketplaceBidding";
 
 // Tailor Dashboard
 import TailorLayout from "./layouts/TailorLayout";
@@ -37,43 +41,48 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<AuthPage />} />
-            
-            {/* User Dashboard Routes */}
-            <Route path="/dashboard" element={<UserLayout />}>
-              <Route index element={<UserDashboard />} />
-              <Route path="upload" element={<FabricUpload />} />
-              <Route path="design" element={<AIDesign />} />
-              <Route path="tryon" element={<VirtualTryOn />} />
-              <Route path="marketplace" element={<AccessoriesMarketplace />} />
-              <Route path="orders" element={<MyOrders />} />
-            </Route>
+      <DesignProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<AuthPage />} />
+              
+              {/* User Dashboard Routes */}
+              <Route path="/dashboard" element={<UserLayout />}>
+                <Route index element={<UserDashboard />} />
+                <Route path="upload" element={<FabricUpload />} />
+                <Route path="design" element={<AIDesign />} />
+                <Route path="tryon" element={<VirtualTryOn />} />
+                <Route path="marketplace" element={<AccessoriesMarketplace />} />
+                <Route path="orders" element={<MyOrders />} />
+                <Route path="chatbot" element={<ChatbotAssistant />} />
+                <Route path="profile" element={<UserProfile />} />
+                <Route path="bidding" element={<MarketplaceBidding />} />
+              </Route>
 
-            {/* Tailor Dashboard Routes */}
-            <Route path="/tailor" element={<TailorLayout />}>
-              <Route index element={<TailorDashboard />} />
-              <Route path="profile" element={<TailorProfile />} />
-              <Route path="orders" element={<TailorOrders />} />
-              <Route path="marketplace" element={<TailorShop />} />
-              <Route path="delivery" element={<TailorDelivery />} />
-              <Route path="earnings" element={<TailorEarnings />} />
-            </Route>
+              {/* Tailor Dashboard Routes */}
+              <Route path="/tailor" element={<TailorLayout />}>
+                <Route index element={<TailorDashboard />} />
+                <Route path="profile" element={<TailorProfile />} />
+                <Route path="orders" element={<TailorOrders />} />
+                <Route path="marketplace" element={<TailorShop />} />
+                <Route path="delivery" element={<TailorDelivery />} />
+                <Route path="earnings" element={<TailorEarnings />} />
+              </Route>
 
-            {/* Admin Dashboard Routes */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-            </Route>
+              {/* Admin Dashboard Routes */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+              </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </DesignProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

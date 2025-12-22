@@ -3,7 +3,7 @@ import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   Upload, Palette, Shirt, ShoppingBag, Package,
-  LogOut, User, Menu, X, Home, Sparkles
+  LogOut, User, Menu, X, Home, Sparkles, MessageCircle, Gavel
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,10 @@ const UserLayout: React.FC = () => {
     { path: '/dashboard/design', label: 'AI Design', icon: Palette },
     { path: '/dashboard/tryon', label: 'Virtual Try-On', icon: Shirt },
     { path: '/dashboard/marketplace', label: 'Accessories', icon: ShoppingBag },
+    { path: '/dashboard/bidding', label: 'Post Order', icon: Gavel },
     { path: '/dashboard/orders', label: 'My Orders', icon: Package },
+    { path: '/dashboard/chatbot', label: 'AI Assistant', icon: MessageCircle },
+    { path: '/dashboard/profile', label: 'Profile', icon: User },
   ];
 
   return (

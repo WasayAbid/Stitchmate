@@ -16,6 +16,7 @@ import UserLayout from "./layouts/UserLayout";
 import UserDashboard from "./pages/user/UserDashboard";
 import FabricUpload from "./pages/user/FabricUpload";
 import AIDesign from "./pages/user/AIDesign";
+import DesignStudio from "./pages/user/DesignStudio";
 import VirtualTryOn from "./pages/user/VirtualTryOn";
 import AccessoriesMarketplace from "./pages/user/AccessoriesMarketplace";
 import MyOrders from "./pages/user/MyOrders";
@@ -28,6 +29,7 @@ import TailorLayout from "./layouts/TailorLayout";
 import TailorDashboard from "./pages/tailor/TailorDashboard";
 import TailorProfile from "./pages/tailor/TailorProfile";
 import TailorOrders from "./pages/tailor/TailorOrders";
+import TailorBidding from "./pages/tailor/TailorBidding";
 import TailorShop from "./pages/tailor/TailorShop";
 import TailorDelivery from "./pages/tailor/TailorDelivery";
 import TailorEarnings from "./pages/tailor/TailorEarnings";
@@ -55,6 +57,7 @@ const App = () => (
                 <Route index element={<UserDashboard />} />
                 <Route path="upload" element={<FabricUpload />} />
                 <Route path="design" element={<AIDesign />} />
+                <Route path="studio" element={<DesignStudio />} />
                 <Route path="tryon" element={<VirtualTryOn />} />
                 <Route path="marketplace" element={<AccessoriesMarketplace />} />
                 <Route path="orders" element={<MyOrders />} />
@@ -68,6 +71,7 @@ const App = () => (
                 <Route index element={<TailorDashboard />} />
                 <Route path="profile" element={<TailorProfile />} />
                 <Route path="orders" element={<TailorOrders />} />
+                <Route path="bidding" element={<TailorBidding />} />
                 <Route path="marketplace" element={<TailorShop />} />
                 <Route path="delivery" element={<TailorDelivery />} />
                 <Route path="earnings" element={<TailorEarnings />} />

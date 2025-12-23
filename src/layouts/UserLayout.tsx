@@ -2,8 +2,8 @@ import React from 'react';
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  Upload, Palette, Shirt, ShoppingBag, Package,
-  LogOut, User, Menu, X, Home, Sparkles, MessageCircle, Gavel
+  Shirt, ShoppingBag, Package,
+  LogOut, User, Menu, X, Home, Sparkles, MessageCircle, Gavel, Wand2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -23,8 +23,7 @@ const UserLayout: React.FC = () => {
 
   const navItems = [
     { path: '/dashboard', label: 'Overview', icon: Home },
-    { path: '/dashboard/upload', label: 'Upload Fabric', icon: Upload },
-    { path: '/dashboard/design', label: 'AI Design', icon: Palette },
+    { path: '/dashboard/studio', label: 'Design Studio', icon: Wand2 },
     { path: '/dashboard/tryon', label: 'Virtual Try-On', icon: Shirt },
     { path: '/dashboard/marketplace', label: 'Accessories', icon: ShoppingBag },
     { path: '/dashboard/bidding', label: 'Post Order', icon: Gavel },

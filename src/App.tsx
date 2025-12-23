@@ -14,9 +14,7 @@ import NotFound from "./pages/NotFound";
 // User Dashboard
 import UserLayout from "./layouts/UserLayout";
 import UserDashboard from "./pages/user/UserDashboard";
-import FabricUpload from "./pages/user/FabricUpload";
-import AIDesign from "./pages/user/AIDesign";
-import DesignStudio from "./pages/user/DesignStudio";
+import FabricToDesignStudio from "./pages/user/FabricToDesignStudio";
 import VirtualTryOn from "./pages/user/VirtualTryOn";
 import AccessoriesMarketplace from "./pages/user/AccessoriesMarketplace";
 import MyOrders from "./pages/user/MyOrders";
@@ -52,12 +50,10 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<AuthPage />} />
               
-              {/* User Dashboard Routes */}
+{/* User Dashboard Routes */}
               <Route path="/dashboard" element={<UserLayout />}>
                 <Route index element={<UserDashboard />} />
-                <Route path="upload" element={<FabricUpload />} />
-                <Route path="design" element={<AIDesign />} />
-                <Route path="studio" element={<DesignStudio />} />
+                <Route path="studio" element={<FabricToDesignStudio />} />
                 <Route path="tryon" element={<VirtualTryOn />} />
                 <Route path="marketplace" element={<AccessoriesMarketplace />} />
                 <Route path="orders" element={<MyOrders />} />

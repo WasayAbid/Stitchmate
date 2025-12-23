@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, Sparkles, Check, X, AlertTriangle, Wand2, Palette, ChevronDown, Image as ImageIcon } from 'lucide-react';
+import { Upload, Sparkles, Check, X, AlertTriangle, Wand2, Palette, ChevronDown, Image as ImageIcon, ArrowRight, Shirt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,7 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useDesign, Accessory } from '@/contexts/DesignContext';
 import { toast } from 'sonner';
-
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 const fabricTypes = [
   'Cotton', 'Silk', 'Chiffon', 'Georgette', 'Velvet', 'Lawn', 'Linen', 'Organza', 'Net', 'Jacquard'
 ];
@@ -39,7 +40,7 @@ const accessories: Accessory[] = [
 ];
 
 const FabricToDesignStudio: React.FC = () => {
-  // Section 1: Fabric Input State
+  const navigate = useNavigate();
   const [fabricImage, setFabricImage] = useState<string | null>(null);
   const [fabricLength, setFabricLength] = useState<string>('');
   const [fabricWidth, setFabricWidth] = useState<string>('');
@@ -188,6 +189,14 @@ const FabricToDesignStudio: React.FC = () => {
     toast.success('Design finalized with accessories! Ready for virtual try-on or ordering.');
   };
 
+  const handleProceedToTryOn = () => {
+    if (selectedDesignIndex === null) {
+      toast.error('Please select a design first');
+      return;
+    }
+    toast.success('Navigating to Virtual Try-On...');
+    navigate('/dashboard/tryon');
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 p-4 md:p-8">
       <div className="max-w-5xl mx-auto space-y-8">
@@ -593,6 +602,24 @@ const FabricToDesignStudio: React.FC = () => {
                   <Sparkles className="w-4 h-4 mr-2" />
                   Finalize Design
                 </Button>
+
+                {/* Proceed to Virtual Try-On Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <Button 
+                    onClick={handleProceedToTryOn}
+                    variant="gold"
+                    size="lg"
+                    className="w-full mt-3 group"
+                  >
+                    <Shirt className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+                    Proceed to Virtual Try-On
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </motion.div>
               </div>
             </div>
           </section>

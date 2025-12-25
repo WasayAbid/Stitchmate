@@ -8,8 +8,8 @@ import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import dressPreview from '@/assets/dress-preview.png';
 
-// Lazy load 3D component for better performance
-const TryOnScene = lazy(() => import('@/components/3d/TryOnScene'));
+// Lazy load enhanced 3D component for better performance
+const EnhancedTryOnScene = lazy(() => import('@/components/3d/EnhancedTryOnScene'));
 
 /**
  * VirtualTryOn - Enhanced 3D Virtual Try-On Experience
@@ -283,12 +283,12 @@ const VirtualTryOn: React.FC = () => {
               {show3D ? (
                 <div className="space-y-4">
                   <Suspense fallback={
-                    <div className="h-64 flex items-center justify-center">
+                    <div className="h-80 flex items-center justify-center">
                       <div className="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin" />
                     </div>
                   }>
-                    <div className="h-64 rounded-xl overflow-hidden">
-                      <TryOnScene 
+                    <div className="h-80 rounded-xl overflow-hidden">
+                      <EnhancedTryOnScene 
                         userImage={userImage} 
                         isProcessing={isProcessing}
                         showResult={!!tryOnResult}

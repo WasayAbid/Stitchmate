@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Upload, Sparkles, Check, X, AlertTriangle, Wand2, Palette, ChevronDown, Image as ImageIcon, ArrowRight, Shirt } from 'lucide-react';
+import React, { useState, useRef, Suspense, lazy } from 'react';
+import { Upload, Sparkles, Check, X, AlertTriangle, Wand2, Palette, ChevronDown, Image as ImageIcon, ArrowRight, Shirt, RotateCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,7 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useDesign, Accessory } from '@/contexts/DesignContext';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Lazy load 3D component
+const EnhancedScene3D = lazy(() => import('@/components/3d/EnhancedScene3D'));
 const fabricTypes = [
   'Cotton', 'Silk', 'Chiffon', 'Georgette', 'Velvet', 'Lawn', 'Linen', 'Organza', 'Net', 'Jacquard'
 ];
@@ -567,21 +570,38 @@ const FabricToDesignStudio: React.FC = () => {
                 </div>
               </div>
 
-              {/* Live Preview */}
+              {/* Live 3D Preview */}
               <div className="space-y-4">
-                <Label>Live Preview</Label>
-                <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-border/50 flex flex-col items-center justify-center p-4">
-                  <div className="text-8xl mb-4">👗</div>
-                  {selectedAccessories.length > 0 && (
-                    <div className="flex flex-wrap gap-1 justify-center">
-                      {selectedAccessories.map(acc => (
-                        <span key={acc.id} className="px-2 py-1 rounded-full bg-primary/20 text-xs text-primary">
-                          + {acc.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <Label className="flex items-center gap-2">
+                  Live 3D Preview
+                  <RotateCw className="w-4 h-4 text-muted-foreground animate-spin-slow" />
+                </Label>
+                <Suspense fallback={
+                  <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-border/50 flex items-center justify-center">
+                    <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
+                  </div>
+                }>
+                  <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border/50">
+                    <EnhancedScene3D 
+                      accessories={selectedAccessories}
+                      variant="studio"
+                    />
+                  </div>
+                </Suspense>
+                {selectedAccessories.length > 0 && (
+                  <div className="flex flex-wrap gap-1 justify-center">
+                    {selectedAccessories.map(acc => (
+                      <motion.span 
+                        key={acc.id} 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="px-2 py-1 rounded-full bg-primary/20 text-xs text-primary"
+                      >
+                        + {acc.name}
+                      </motion.span>
+                    ))}
+                  </div>
+                )}
 
                 {/* Selected Summary */}
                 {selectedAccessories.length > 0 && (

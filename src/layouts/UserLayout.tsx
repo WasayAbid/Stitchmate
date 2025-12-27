@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ChatWidget } from '@/components/chatbot/ChatWidget';
 
 /**
  * UserLayout - Dashboard layout for regular users
@@ -113,6 +114,9 @@ const UserLayout: React.FC = () => {
           <Outlet />
         </div>
       </main>
+
+      {/* Floating Chat Widget - hidden on chatbot page */}
+      {location.pathname !== '/dashboard/chatbot' && <ChatWidget />}
     </div>
   );
 };

@@ -263,6 +263,13 @@
   .animate-confetti { animation: confetti-fall 3s linear forwards; }
   .animate-thread-wave { animation: thread-wave 3s ease-in-out infinite; }
 
+  /* Shimmer animation */
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .animate-shimmer { animation: shimmer 2s ease-in-out infinite; }
+
   /* Hover Effects */
   .hover-bounce:hover { animation: bounce-soft 0.4s ease-in-out; }
   .hover-wiggle:hover { animation: wiggle 0.3s ease-in-out; }

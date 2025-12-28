@@ -98,7 +98,7 @@ export const ChatWidget: React.FC = () => {
               />
               
               <div className="relative p-1 rounded-full bg-gradient-to-br from-primary via-rose to-gold">
-                <ChatAvatar size="md" isHovered={isHovered} showWave />
+                <ChatAvatar size="md" mood={isHovered ? 'greeting' : 'idle'} isHovered={isHovered} />
               </div>
 
               {/* Tooltip */}

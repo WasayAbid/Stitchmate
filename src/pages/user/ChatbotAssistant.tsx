@@ -115,7 +115,7 @@ const ChatbotAssistant: React.FC = () => {
                 transition={{ duration: 2, repeat: Infinity }}
               />
               <div className="relative p-1 rounded-full bg-gradient-to-br from-primary via-rose to-gold">
-                <ChatAvatar size="lg" isHovered={isHovered} showWave isTyping={isTyping} />
+                <ChatAvatar size="xl" mood={isTyping ? 'thinking' : isHovered ? 'greeting' : 'happy'} isTyping={isTyping} isHovered={isHovered} />
               </div>
             </motion.div>
             <div>

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import sanaAvatar from '@/assets/sana-avatar.png';
 
 type AvatarMood = 'idle' | 'happy' | 'thinking' | 'greeting' | 'farewell' | 'excited';
 
@@ -21,55 +20,46 @@ export const ChatAvatar: React.FC<ChatAvatarProps> = ({
   showSpeechBubble = false,
   speechText = '',
 }) => {
+  const [isBlinking, setIsBlinking] = useState(false);
+  const [currentMood, setCurrentMood] = useState<AvatarMood>(mood);
+
+  useEffect(() => {
+    setCurrentMood(mood);
+  }, [mood]);
+
+  // Blink animation
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      setIsBlinking(true);
+      setTimeout(() => setIsBlinking(false), 120);
+    }, 2500 + Math.random() * 2000);
+    return () => clearInterval(blinkInterval);
+  }, []);
+
   const sizeConfig = {
-    sm: { container: 64, image: 56 },
-    md: { container: 96, image: 84 },
-    lg: { container: 140, image: 120 },
-    xl: { container: 200, image: 180 },
+    sm: { container: 64, eye: 8, pupil: 4, blush: 12 },
+    md: { container: 96, eye: 12, pupil: 6, blush: 16 },
+    lg: { container: 128, eye: 16, pupil: 8, blush: 22 },
+    xl: { container: 180, eye: 22, pupil: 11, blush: 30 },
   };
 
   const config = sizeConfig[size];
 
-  const getMoodAnimation = () => {
-    switch (mood) {
+  const getEyeStyle = () => {
+    if (isBlinking) return { scaleY: 0.1 };
+    switch (currentMood) {
       case 'happy':
-        return {
-          scale: [1, 1.05, 1],
-          rotate: [-2, 2, -2],
-          transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" }
-        };
-      case 'thinking':
-        return {
-          rotate: [-3, 3, -3],
-          transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-        };
-      case 'greeting':
-        return {
-          y: [0, -10, 0],
-          scale: [1, 1.08, 1],
-          transition: { duration: 0.6, repeat: 2, ease: "easeOut" }
-        };
-      case 'farewell':
-        return {
-          rotate: [-8, 8, -8, 8, 0],
-          transition: { duration: 1.5, ease: "easeInOut" }
-        };
       case 'excited':
-        return {
-          y: [0, -8, 0, -5, 0],
-          scale: [1, 1.08, 1, 1.04, 1],
-          transition: { duration: 0.8, repeat: Infinity, ease: "easeOut" }
-        };
+        return { scaleY: 0.6 };
+      case 'thinking':
+        return { scaleY: 1, y: -2 };
       default:
-        return {
-          y: [0, -4, 0],
-          transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-        };
+        return { scaleY: 1 };
     }
   };
 
   return (
-    <div className="relative" style={{ width: config.container, height: config.container }}>
+    <div className="relative">
       {/* Speech Bubble */}
       <AnimatePresence>
         {showSpeechBubble && speechText && (
@@ -85,202 +75,600 @@ export const ChatAvatar: React.FC<ChatAvatarProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Outer Glow Effect */}
       <motion.div
-        className="absolute inset-0 rounded-full blur-xl"
-        style={{ background: 'linear-gradient(135deg, #FFB6C1, #DDA0DD, #FFD700)' }}
-        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 2.5, repeat: Infinity }}
-      />
-
-      {/* Sparkle Ring */}
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        style={{
-          background: 'linear-gradient(135deg, transparent 30%, rgba(255,182,193,0.4) 50%, transparent 70%)',
+        className="relative cursor-pointer"
+        style={{ width: config.container, height: config.container }}
+        animate={{
+          y: currentMood === 'excited' ? [0, -6, 0] : isHovered ? [0, -3, 0] : 0,
+          rotate: currentMood === 'greeting' || currentMood === 'farewell' ? [0, -4, 4, -4, 0] : 0,
         }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      />
-
-      {/* Main Avatar Container */}
-      <motion.div
-        className="relative mx-auto rounded-full overflow-hidden cursor-pointer"
-        style={{
-          width: config.image,
-          height: config.image,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          boxShadow: '0 8px 32px rgba(255, 182, 193, 0.5), 0 4px 16px rgba(221, 160, 221, 0.4), inset 0 0 20px rgba(255,255,255,0.3)',
-        }}
-        animate={getMoodAnimation()}
-        whileHover={{ scale: 1.08 }}
+        transition={{ duration: 0.5, repeat: currentMood === 'excited' ? Infinity : 0 }}
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        {/* Gradient Border */}
+        {/* Outer Glow */}
+        <motion.div
+          className="absolute inset-0 rounded-full blur-xl opacity-60"
+          style={{ background: 'linear-gradient(135deg, #FFB6C1, #DDA0DD, #FFD700)' }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
+          transition={{ duration: 2.5, repeat: Infinity }}
+        />
+
+        {/* Main Face Circle */}
         <div
-          className="absolute inset-0 rounded-full p-[3px]"
-          style={{ background: 'linear-gradient(135deg, #FF69B4, #FFB6C1, #DDA0DD, #E6E6FA)' }}
+          className="relative w-full h-full rounded-full overflow-hidden shadow-2xl"
+          style={{ boxShadow: '0 8px 32px rgba(255, 182, 193, 0.4), 0 4px 16px rgba(221, 160, 221, 0.3)' }}
         >
-          <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-pink-50 to-rose-100">
-            <img
-              src={sanaAvatar}
-              alt="Sana - Your Fashion Assistant"
-              className="w-full h-full object-cover object-top scale-110"
-              style={{ marginTop: '-5%' }}
-            />
+          {/* Gradient Border Ring */}
+          <div
+            className="absolute inset-0 rounded-full p-[3px]"
+            style={{ background: 'linear-gradient(135deg, #FF69B4, #FFB6C1, #DDA0DD, #E6E6FA)' }}
+          >
+            {/* Skin Base */}
+            <div
+              className="w-full h-full rounded-full relative overflow-hidden"
+              style={{ background: 'linear-gradient(180deg, #FFECD2 0%, #FCE1C6 40%, #F8D5B8 100%)' }}
+            >
+              {/* Face Highlight */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: '60%',
+                  height: '40%',
+                  top: '15%',
+                  left: '20%',
+                  background: 'radial-gradient(ellipse, rgba(255,255,255,0.4) 0%, transparent 70%)',
+                }}
+              />
+
+              {/* Beautiful Hair */}
+              <div
+                className="absolute"
+                style={{
+                  width: '100%',
+                  height: '55%',
+                  top: 0,
+                  background: 'linear-gradient(180deg, #4A2040 0%, #6B3050 30%, #8B4570 60%, #6B3050 100%)',
+                  borderRadius: '50% 50% 0 0',
+                }}
+              />
+
+              {/* Hair Shine */}
+              <motion.div
+                className="absolute"
+                style={{
+                  width: '30%',
+                  height: '25%',
+                  top: '8%',
+                  left: '25%',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 60%)',
+                  borderRadius: '50%',
+                }}
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+
+              {/* Cute Bangs - Left */}
+              <motion.div
+                className="absolute"
+                style={{
+                  width: '28%',
+                  height: size === 'xl' ? '22%' : '20%',
+                  left: '12%',
+                  top: '22%',
+                  background: 'linear-gradient(180deg, #6B3050 0%, #8B4570 100%)',
+                  borderRadius: '0 0 50% 50%',
+                  transformOrigin: 'top center',
+                }}
+                animate={{ rotate: isHovered ? [0, 3, -2, 0] : 0 }}
+                transition={{ duration: 0.4 }}
+              />
+
+              {/* Cute Bangs - Right */}
+              <motion.div
+                className="absolute"
+                style={{
+                  width: '25%',
+                  height: size === 'xl' ? '18%' : '16%',
+                  right: '15%',
+                  top: '24%',
+                  background: 'linear-gradient(180deg, #6B3050 0%, #8B4570 100%)',
+                  borderRadius: '0 0 50% 50%',
+                  transformOrigin: 'top center',
+                }}
+                animate={{ rotate: isHovered ? [0, -3, 2, 0] : 0 }}
+                transition={{ duration: 0.4, delay: 0.05 }}
+              />
+
+              {/* Side Hair - Left */}
+              <div
+                className="absolute"
+                style={{
+                  width: '18%',
+                  height: '35%',
+                  left: '3%',
+                  top: '35%',
+                  background: 'linear-gradient(180deg, #6B3050 0%, #8B4570 50%, #6B3050 100%)',
+                  borderRadius: '0 0 40% 40%',
+                }}
+              />
+
+              {/* Side Hair - Right */}
+              <div
+                className="absolute"
+                style={{
+                  width: '18%',
+                  height: '35%',
+                  right: '3%',
+                  top: '35%',
+                  background: 'linear-gradient(180deg, #6B3050 0%, #8B4570 50%, #6B3050 100%)',
+                  borderRadius: '0 0 40% 40%',
+                }}
+              />
+
+              {/* ✨ Cute Bow */}
+              <motion.div
+                className="absolute z-20"
+                style={{ top: '8%', right: '15%' }}
+                animate={{ rotate: isHovered ? [0, -5, 5, 0] : 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {/* Bow Left Loop */}
+                <div
+                  className="absolute"
+                  style={{
+                    width: config.container * 0.12,
+                    height: config.container * 0.1,
+                    background: 'linear-gradient(135deg, #FF69B4, #FF1493)',
+                    borderRadius: '50% 20% 50% 50%',
+                    transform: 'rotate(-30deg)',
+                    left: -config.container * 0.08,
+                    top: 0,
+                    boxShadow: 'inset 2px 2px 4px rgba(255,255,255,0.3)',
+                  }}
+                />
+                {/* Bow Right Loop */}
+                <div
+                  className="absolute"
+                  style={{
+                    width: config.container * 0.12,
+                    height: config.container * 0.1,
+                    background: 'linear-gradient(135deg, #FF69B4, #FF1493)',
+                    borderRadius: '20% 50% 50% 50%',
+                    transform: 'rotate(30deg)',
+                    left: config.container * 0.02,
+                    top: 0,
+                    boxShadow: 'inset 2px 2px 4px rgba(255,255,255,0.3)',
+                  }}
+                />
+                {/* Bow Center */}
+                <div
+                  className="absolute"
+                  style={{
+                    width: config.container * 0.05,
+                    height: config.container * 0.05,
+                    background: 'linear-gradient(135deg, #FF1493, #C71585)',
+                    borderRadius: '50%',
+                    left: -config.container * 0.01,
+                    top: config.container * 0.02,
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                  }}
+                />
+                {/* Bow Ribbons */}
+                <div
+                  className="absolute"
+                  style={{
+                    width: config.container * 0.03,
+                    height: config.container * 0.08,
+                    background: 'linear-gradient(180deg, #FF1493, #C71585)',
+                    borderRadius: '0 0 50% 50%',
+                    left: -config.container * 0.005,
+                    top: config.container * 0.06,
+                    transform: 'rotate(-10deg)',
+                  }}
+                />
+                <div
+                  className="absolute"
+                  style={{
+                    width: config.container * 0.03,
+                    height: config.container * 0.07,
+                    background: 'linear-gradient(180deg, #FF1493, #C71585)',
+                    borderRadius: '0 0 50% 50%',
+                    left: config.container * 0.01,
+                    top: config.container * 0.06,
+                    transform: 'rotate(10deg)',
+                  }}
+                />
+              </motion.div>
+
+              {/* Pretty Eyes */}
+              <div className="absolute" style={{ left: '22%', right: '22%', top: '42%' }}>
+                {/* Left Eye */}
+                <motion.div
+                  className="absolute"
+                  style={{
+                    width: config.eye,
+                    height: config.eye * 1.2,
+                    left: '8%',
+                    background: 'linear-gradient(180deg, #2C1810 0%, #1a0f0a 100%)',
+                    borderRadius: '50%',
+                  }}
+                  animate={getEyeStyle()}
+                  transition={{ duration: 0.1 }}
+                >
+                  {/* Pupil & Sparkles */}
+                  {!isBlinking && (
+                    <>
+                      {/* Main sparkle */}
+                      <motion.div
+                        className="absolute bg-primary-foreground rounded-full"
+                        style={{
+                          width: config.pupil * 0.6,
+                          height: config.pupil * 0.6,
+                          right: '15%',
+                          top: '15%',
+                        }}
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                      {/* Secondary sparkle */}
+                      <div
+                        className="absolute bg-primary-foreground/70 rounded-full"
+                        style={{
+                          width: config.pupil * 0.3,
+                          height: config.pupil * 0.3,
+                          left: '25%',
+                          bottom: '25%',
+                        }}
+                      />
+                    </>
+                  )}
+                </motion.div>
+
+                {/* Right Eye */}
+                <motion.div
+                  className="absolute"
+                  style={{
+                    width: config.eye,
+                    height: config.eye * 1.2,
+                    right: '8%',
+                    background: 'linear-gradient(180deg, #2C1810 0%, #1a0f0a 100%)',
+                    borderRadius: '50%',
+                  }}
+                  animate={getEyeStyle()}
+                  transition={{ duration: 0.1 }}
+                >
+                  {!isBlinking && (
+                    <>
+                      <motion.div
+                        className="absolute bg-primary-foreground rounded-full"
+                        style={{
+                          width: config.pupil * 0.6,
+                          height: config.pupil * 0.6,
+                          right: '15%',
+                          top: '15%',
+                        }}
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                      />
+                      <div
+                        className="absolute bg-primary-foreground/70 rounded-full"
+                        style={{
+                          width: config.pupil * 0.3,
+                          height: config.pupil * 0.3,
+                          left: '25%',
+                          bottom: '25%',
+                        }}
+                      />
+                    </>
+                  )}
+                </motion.div>
+
+                {/* Cute Eyelashes */}
+                {size !== 'sm' && (
+                  <>
+                    <div
+                      className="absolute"
+                      style={{
+                        left: '5%',
+                        top: '-20%',
+                        width: config.eye * 0.15,
+                        height: config.eye * 0.4,
+                        background: '#2C1810',
+                        borderRadius: '50%',
+                        transform: 'rotate(-30deg)',
+                      }}
+                    />
+                    <div
+                      className="absolute"
+                      style={{
+                        right: '5%',
+                        top: '-20%',
+                        width: config.eye * 0.15,
+                        height: config.eye * 0.4,
+                        background: '#2C1810',
+                        borderRadius: '50%',
+                        transform: 'rotate(30deg)',
+                      }}
+                    />
+                  </>
+                )}
+
+                {/* Thinking Eyebrows */}
+                {currentMood === 'thinking' && (
+                  <>
+                    <motion.div
+                      className="absolute rounded-full"
+                      style={{
+                        width: config.eye * 0.8,
+                        height: 2,
+                        left: '8%',
+                        top: '-30%',
+                        background: '#4A2040',
+                      }}
+                      animate={{ rotate: -10, y: [0, -1, 0] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
+                    <motion.div
+                      className="absolute rounded-full"
+                      style={{
+                        width: config.eye * 0.8,
+                        height: 2,
+                        right: '8%',
+                        top: '-30%',
+                        background: '#4A2040',
+                      }}
+                      animate={{ rotate: 10, y: [0, -1, 0] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
+                  </>
+                )}
+              </div>
+
+              {/* Rosy Cheeks */}
+              <motion.div
+                className="absolute rounded-full"
+                style={{
+                  width: config.blush,
+                  height: config.blush * 0.6,
+                  left: '10%',
+                  top: '55%',
+                  background: 'radial-gradient(ellipse, rgba(255,105,180,0.5) 0%, transparent 70%)',
+                }}
+                animate={{
+                  opacity: currentMood === 'happy' || currentMood === 'excited' ? [0.5, 0.8, 0.5] : 0.4,
+                  scale: currentMood === 'happy' ? [1, 1.1, 1] : 1,
+                }}
+                transition={{ duration: 1.2, repeat: Infinity }}
+              />
+              <motion.div
+                className="absolute rounded-full"
+                style={{
+                  width: config.blush,
+                  height: config.blush * 0.6,
+                  right: '10%',
+                  top: '55%',
+                  background: 'radial-gradient(ellipse, rgba(255,105,180,0.5) 0%, transparent 70%)',
+                }}
+                animate={{
+                  opacity: currentMood === 'happy' || currentMood === 'excited' ? [0.5, 0.8, 0.5] : 0.4,
+                  scale: currentMood === 'happy' ? [1, 1.1, 1] : 1,
+                }}
+                transition={{ duration: 1.2, repeat: Infinity, delay: 0.3 }}
+              />
+
+              {/* Cute Nose */}
+              <div
+                className="absolute left-1/2 -translate-x-1/2"
+                style={{
+                  width: config.container * 0.04,
+                  height: config.container * 0.03,
+                  top: '55%',
+                  background: 'radial-gradient(ellipse, rgba(220,180,160,0.6) 0%, transparent 70%)',
+                  borderRadius: '50%',
+                }}
+              />
+
+              {/* Pretty Mouth */}
+              <div
+                className="absolute left-1/2 -translate-x-1/2"
+                style={{ top: '65%', width: config.container * 0.2, height: config.container * 0.12 }}
+              >
+                {/* Smile variations */}
+                {(currentMood === 'idle' || currentMood === 'greeting' || currentMood === 'farewell') && !isTyping && (
+                  <motion.div
+                    className="absolute w-full rounded-b-full"
+                    style={{
+                      height: '60%',
+                      borderBottom: `${size === 'xl' ? 3 : 2}px solid #D4737A`,
+                      borderLeft: `${size === 'xl' ? 2 : 1}px solid transparent`,
+                      borderRight: `${size === 'xl' ? 2 : 1}px solid transparent`,
+                    }}
+                  />
+                )}
+
+                {currentMood === 'happy' && (
+                  <motion.div
+                    className="absolute w-full rounded-b-full overflow-hidden"
+                    style={{ height: '80%', background: '#D4737A' }}
+                    animate={{ scaleY: [1, 1.05, 1] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                  >
+                    <div
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full"
+                      style={{ width: '50%', height: '40%', background: '#E85A6B' }}
+                    />
+                  </motion.div>
+                )}
+
+                {currentMood === 'excited' && (
+                  <motion.div
+                    className="absolute w-full rounded-full overflow-hidden"
+                    style={{ height: '100%', background: '#D4737A' }}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 0.3, repeat: Infinity }}
+                  >
+                    <div
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full"
+                      style={{ width: '60%', height: '45%', background: '#E85A6B' }}
+                    />
+                    <div
+                      className="absolute top-0 left-1/2 -translate-x-1/2"
+                      style={{ width: '55%', height: '25%', background: '#fff', borderRadius: '0 0 40% 40%' }}
+                    />
+                  </motion.div>
+                )}
+
+                {currentMood === 'thinking' && (
+                  <motion.div
+                    className="absolute rounded-full"
+                    style={{ width: '35%', height: '50%', background: '#D4737A', left: '55%' }}
+                    animate={{ x: [0, 3, 0, -3, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                )}
+
+                {isTyping && (
+                  <motion.div
+                    className="absolute w-full rounded-full overflow-hidden"
+                    style={{ background: '#D4737A' }}
+                    animate={{ height: ['35%', '70%', '45%', '60%', '35%'] }}
+                    transition={{ duration: 0.5, repeat: Infinity }}
+                  >
+                    <div
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full"
+                      style={{ width: '45%', height: '40%', background: '#E85A6B' }}
+                    />
+                  </motion.div>
+                )}
+              </div>
+
+              {/* Sparkles for excited mood */}
+              {currentMood === 'excited' && (
+                <>
+                  {[...Array(5)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute"
+                      style={{
+                        fontSize: size === 'xl' ? 14 : size === 'lg' ? 12 : 10,
+                        left: `${15 + i * 18}%`,
+                        top: `${5 + (i % 2) * 12}%`,
+                        color: '#FFD700',
+                      }}
+                      animate={{
+                        scale: [0, 1.2, 0],
+                        rotate: [0, 180, 360],
+                        opacity: [0, 1, 0],
+                      }}
+                      transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.15 }}
+                    >
+                      ✦
+                    </motion.div>
+                  ))}
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </motion.div>
 
-      {/* Floating Hearts for Happy/Excited */}
-      {(mood === 'happy' || mood === 'excited') && (
-        <>
-          {[...Array(4)].map((_, i) => (
+        {/* Waving Hand */}
+        <AnimatePresence>
+          {(currentMood === 'greeting' || currentMood === 'farewell' || isHovered) && (
             <motion.div
-              key={i}
-              className="absolute pointer-events-none"
-              initial={{ opacity: 0, scale: 0 }}
+              initial={{ opacity: 0, x: 15, scale: 0.5 }}
               animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1, 0.5],
-                x: [0, (i - 1.5) * 25],
-                y: [0, -40 - i * 12]
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                rotate: [0, 20, -12, 20, -8, 15, 0],
               }}
+              exit={{ opacity: 0, x: 15, scale: 0.5 }}
               transition={{
-                duration: 1.8,
-                repeat: Infinity,
-                delay: i * 0.4,
-                ease: "easeOut"
+                duration: 0.25,
+                rotate: { duration: 1, repeat: Infinity, ease: 'easeInOut' },
               }}
+              className="absolute"
               style={{
-                left: '50%',
-                top: '15%',
-                fontSize: size === 'xl' ? '1.2rem' : size === 'lg' ? '1rem' : '0.8rem'
+                right: '-12%',
+                bottom: '18%',
+                fontSize: size === 'xl' ? 28 : size === 'lg' ? 22 : 16,
               }}
             >
-              {i % 2 === 0 ? '💕' : '💖'}
+              👋
             </motion.div>
-          ))}
-        </>
-      )}
+          )}
+        </AnimatePresence>
 
-      {/* Thinking Bubbles */}
-      {(mood === 'thinking' || isTyping) && (
-        <div className="absolute -top-2 -right-2">
-          {[...Array(3)].map((_, i) => (
+        {/* Thinking Bubbles */}
+        <AnimatePresence>
+          {currentMood === 'thinking' && (
             <motion.div
-              key={i}
-              className="absolute rounded-full shadow-md"
-              style={{
-                width: 8 + i * 4,
-                height: 8 + i * 4,
-                right: i * 10,
-                top: -i * 8,
-                background: 'linear-gradient(135deg, #FFB6C1, #DDA0DD)',
-              }}
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.7, 1, 0.7]
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: i * 0.25
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Greeting Wave Hand */}
-      {mood === 'greeting' && (
-        <motion.div
-          className="absolute -right-3 top-1/3 pointer-events-none"
-          animate={{
-            rotate: [0, 25, -15, 25, 0],
-            x: [0, 5, 0, 5, 0]
-          }}
-          transition={{
-            duration: 1,
-            repeat: 2,
-            ease: "easeInOut"
-          }}
-          style={{ fontSize: size === 'xl' ? '2rem' : size === 'lg' ? '1.5rem' : '1.2rem' }}
-        >
-          👋
-        </motion.div>
-      )}
-
-      {/* Farewell Sparkles */}
-      {mood === 'farewell' && (
-        <>
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute pointer-events-none"
               initial={{ opacity: 0, scale: 0 }}
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1.2, 0],
-                rotate: [0, 180, 360]
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: i * 0.25
-              }}
-              style={{
-                left: `${15 + i * 18}%`,
-                top: `${15 + (i % 2) * 55}%`,
-                fontSize: size === 'xl' ? '1rem' : '0.8rem'
-              }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              className="absolute -top-3 -right-1"
             >
-              ✨
+              {[...Array(3)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute rounded-full"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(var(--muted)), hsl(var(--muted-foreground) / 0.2))',
+                    width: 5 + i * 4,
+                    height: 5 + i * 4,
+                    right: i * 7,
+                    top: -i * 5,
+                    border: '1px solid hsl(var(--border))',
+                  }}
+                  animate={{ y: [0, -2, 0], opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
+                />
+              ))}
             </motion.div>
-          ))}
-        </>
-      )}
+          )}
+        </AnimatePresence>
 
-      {/* Decorative Sparkles */}
-      <motion.div
-        className="absolute -top-1 -right-1 pointer-events-none"
-        animate={{
-          scale: [0.8, 1.3, 0.8],
-          opacity: [0.6, 1, 0.6],
-          rotate: [0, 180, 360]
-        }}
-        transition={{ duration: 2, repeat: Infinity }}
-        style={{ fontSize: size === 'xl' ? '1.2rem' : '0.9rem' }}
-      >
-        ✨
-      </motion.div>
+        {/* Typing Glow */}
+        {isTyping && (
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{ border: '2px solid hsl(var(--primary))' }}
+            animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.3, 0.6] }}
+            transition={{ duration: 1.2, repeat: Infinity }}
+          />
+        )}
 
-      <motion.div
-        className="absolute -bottom-1 -left-1 pointer-events-none"
-        animate={{
-          scale: [1, 0.7, 1],
-          opacity: [1, 0.5, 1]
-        }}
-        transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
-        style={{ fontSize: size === 'xl' ? '1rem' : '0.75rem' }}
-      >
-        💖
-      </motion.div>
-
-      <motion.div
-        className="absolute top-0 left-0 pointer-events-none"
-        animate={{
-          scale: [0.9, 1.1, 0.9],
-          opacity: [0.5, 0.9, 0.5]
-        }}
-        transition={{ duration: 2.5, repeat: Infinity, delay: 1 }}
-        style={{ fontSize: size === 'xl' ? '0.9rem' : '0.7rem' }}
-      >
-        🌸
+        {/* Hearts floating on happy/excited */}
+        {(currentMood === 'happy' || currentMood === 'excited') && (
+          <>
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={`heart-${i}`}
+                className="absolute text-primary"
+                style={{
+                  fontSize: size === 'xl' ? 12 : 10,
+                  left: `${20 + i * 30}%`,
+                  bottom: '100%',
+                }}
+                initial={{ y: 0, opacity: 0 }}
+                animate={{
+                  y: [0, -20, -40],
+                  opacity: [0, 1, 0],
+                  x: [0, i % 2 === 0 ? 8 : -8, i % 2 === 0 ? 15 : -15],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.5,
+                }}
+              >
+                💕
+              </motion.div>
+            ))}
+          </>
+        )}
       </motion.div>
     </div>
   );
 };
-
-export default ChatAvatar;

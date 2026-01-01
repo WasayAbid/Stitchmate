@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChatAvatar } from './ChatAvatar';
-import { User } from 'lucide-react';
+import { User, Sparkles } from 'lucide-react';
 
 interface ChatMessageProps {
   role: 'user' | 'assistant';
@@ -30,7 +29,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       {/* Avatar */}
       <div className="flex-shrink-0">
         {isBot ? (
-          <ChatAvatar size="sm" />
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose to-primary flex items-center justify-center shadow-lg">
+            <Sparkles className="w-6 h-6 text-primary-foreground" />
+          </div>
         ) : (
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-lavender to-primary flex items-center justify-center">
             <User className="w-6 h-6 text-primary-foreground" />

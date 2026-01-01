@@ -10,7 +10,7 @@ import heroBanner from '@/assets/hero-banner.png';
  * UserDashboard - Main overview page for users
  */
 const UserDashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   const features = [
     {
@@ -54,7 +54,7 @@ const UserDashboard: React.FC = () => {
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary/20 via-mint/20 to-gold/20 p-8">
         <div className="relative z-10">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            Welcome back, <span className="text-gradient">{user?.name}</span>! ✨
+            Welcome back, <span className="text-gradient">{profile?.full_name || user?.email?.split('@')[0]}</span>! ✨
           </h1>
           <p className="text-muted-foreground text-lg mb-6">
             Ready to create something beautiful today?

@@ -7,11 +7,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import dressPreview from '@/assets/dress-preview.png';
 
 const UserProfile: React.FC = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    name: user?.name || '',
+    name: profile?.full_name || user?.email || '',
     email: user?.email || '',
     phone: '+92 300 1234567',
     address: 'Lahore, Punjab, Pakistan',

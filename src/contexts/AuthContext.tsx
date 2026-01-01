@@ -1,69 +1,183 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 
 export type UserRole = 'user' | 'tailor' | 'admin';
 
-interface User {
+interface Profile {
   id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  avatar?: string;
+  user_id: string;
+  full_name: string;
+  phone: string | null;
+  avatar_url: string | null;
 }
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
+  profile: Profile | null;
+  role: UserRole | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string, role: UserRole) => Promise<boolean>;
-  signup: (name: string, email: string, password: string, role: UserRole) => Promise<boolean>;
-  logout: () => void;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<{ error: string | null }>;
+  signup: (name: string, email: string, password: string) => Promise<{ error: string | null }>;
+  logout: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: string | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('stichmate_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [role, setRole] = useState<UserRole | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const login = async (email: string, password: string, role: UserRole): Promise<boolean> => {
-    // Simulated login - in production, this would hit an API
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const newUser: User = {
-      id: Math.random().toString(36).substring(7),
-      name: email.split('@')[0],
-      email,
-      role,
-    };
-    
-    setUser(newUser);
-    localStorage.setItem('stichmate_user', JSON.stringify(newUser));
-    return true;
+  const fetchUserData = async (userId: string) => {
+    try {
+      // Fetch profile
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      if (profileData) {
+        setProfile(profileData as Profile);
+      }
+
+      // Fetch role
+      const { data: roleData } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      if (roleData) {
+        setRole(roleData.role as UserRole);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   };
 
-  const signup = async (name: string, email: string, password: string, role: UserRole): Promise<boolean> => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const newUser: User = {
-      id: Math.random().toString(36).substring(7),
-      name,
-      email,
-      role,
-    };
-    
-    setUser(newUser);
-    localStorage.setItem('stichmate_user', JSON.stringify(newUser));
-    return true;
+  useEffect(() => {
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          // Defer data fetching to avoid deadlock
+          setTimeout(() => {
+            fetchUserData(session.user.id);
+          }, 0);
+        } else {
+          setProfile(null);
+          setRole(null);
+        }
+        setIsLoading(false);
+      }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      
+      if (session?.user) {
+        fetchUserData(session.user.id);
+      }
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const login = async (email: string, password: string): Promise<{ error: string | null }> => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        return { error: error.message };
+      }
+
+      return { error: null };
+    } catch (err) {
+      return { error: 'An unexpected error occurred' };
+    }
   };
 
-  const logout = () => {
+  const signup = async (name: string, email: string, password: string): Promise<{ error: string | null }> => {
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: name,
+          },
+        },
+      });
+
+      if (error) {
+        if (error.message.includes('already registered')) {
+          return { error: 'This email is already registered. Please sign in instead.' };
+        }
+        return { error: error.message };
+      }
+
+      return { error: null };
+    } catch (err) {
+      return { error: 'An unexpected error occurred' };
+    }
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem('stichmate_user');
+    setSession(null);
+    setProfile(null);
+    setRole(null);
+  };
+
+  const resetPassword = async (email: string): Promise<{ error: string | null }> => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth?mode=reset`,
+      });
+
+      if (error) {
+        return { error: error.message };
+      }
+
+      return { error: null };
+    } catch (err) {
+      return { error: 'An unexpected error occurred' };
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, signup, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session,
+      profile,
+      role,
+      isAuthenticated: !!user, 
+      isLoading,
+      login, 
+      signup, 
+      logout,
+      resetPassword,
+    }}>
       {children}
     </AuthContext.Provider>
   );

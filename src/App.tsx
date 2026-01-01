@@ -8,8 +8,13 @@ import { DesignProvider } from "@/contexts/DesignContext";
 
 // Pages
 import Index from "./pages/Index";
-import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
+
+// Auth Pages
+import SignInPage from "./pages/auth/SignInPage";
+import SignUpPage from "./pages/auth/SignUpPage";
+import TailorApplyPage from "./pages/auth/TailorApplyPage";
+import AdminLoginPage from "./pages/auth/AdminLoginPage";
 
 // User Dashboard
 import UserLayout from "./layouts/UserLayout";
@@ -48,9 +53,14 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<AuthPage />} />
               
-{/* User Dashboard Routes */}
+              {/* Auth Routes */}
+              <Route path="/auth" element={<SignInPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/tailor-apply" element={<TailorApplyPage />} />
+              <Route path="/admin-login" element={<AdminLoginPage />} />
+              
+              {/* User Dashboard Routes */}
               <Route path="/dashboard" element={<UserLayout />}>
                 <Route index element={<UserDashboard />} />
                 <Route path="studio" element={<FabricToDesignStudio />} />

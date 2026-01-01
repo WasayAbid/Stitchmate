@@ -12,11 +12,19 @@ import { cn } from '@/lib/utils';
  * TailorLayout - Dashboard layout for tailors
  */
 const TailorLayout: React.FC = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, profile, role, isAuthenticated, isLoading, logout } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
 
-  if (!isAuthenticated || user?.role !== 'tailor') {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || role !== 'tailor') {
     return <Navigate to="/auth" replace />;
   }
 
@@ -91,7 +99,7 @@ const TailorLayout: React.FC = () => {
             </div>
             {sidebarOpen && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{user?.name}</p>
+                <p className="text-sm font-medium truncate">{profile?.full_name || user?.email}</p>
                 <p className="text-xs text-muted-foreground">Master Tailor</p>
               </div>
             )}

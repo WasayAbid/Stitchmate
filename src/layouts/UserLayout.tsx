@@ -14,11 +14,19 @@ import { ChatWidget } from '@/components/chatbot/ChatWidget';
  * Features animated sidebar with navigation
  */
 const UserLayout: React.FC = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, profile, role, isAuthenticated, isLoading, logout } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
 
-  if (!isAuthenticated || user?.role !== 'user') {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || role !== 'user') {
     return <Navigate to="/auth" replace />;
   }
 
@@ -91,7 +99,7 @@ const UserLayout: React.FC = () => {
             </div>
             {sidebarOpen && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{user?.name}</p>
+                <p className="text-sm font-medium truncate">{profile?.full_name || user?.email}</p>
                 <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
               </div>
             )}

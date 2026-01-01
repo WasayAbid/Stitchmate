@@ -9,7 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
  * TailorDashboard - Main overview page for tailors
  */
 const TailorDashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   const stats = [
     { label: 'Pending Orders', value: 12, icon: Package, color: 'from-primary to-rose', trend: '+3' },
@@ -39,7 +39,7 @@ const TailorDashboard: React.FC = () => {
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-secondary/30 via-mint/20 to-gold/20 p-8">
         <div className="relative z-10">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            Hello, <span className="text-gradient">{user?.name}</span>! 🧵
+            Hello, <span className="text-gradient">{profile?.full_name || 'Master Tailor'}</span>! 🧵
           </h1>
           <p className="text-muted-foreground text-lg mb-4">
             You have <span className="font-semibold text-primary">12 pending orders</span> to work on today

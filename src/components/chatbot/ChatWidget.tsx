@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Sparkles, MessageCircle } from 'lucide-react';
+import { ChatAvatar } from './ChatAvatar';
 import { ChatMessage } from './ChatMessage';
 import { TypingIndicator } from './TypingIndicator';
 import { Button } from '@/components/ui/button';
@@ -97,9 +98,7 @@ export const ChatWidget: React.FC = () => {
               />
               
               <div className="relative p-1 rounded-full bg-gradient-to-br from-primary via-rose to-gold">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose to-primary flex items-center justify-center shadow-lg">
-                  <MessageCircle className="w-8 h-8 text-primary-foreground" />
-                </div>
+                <ChatAvatar size="md" mood={isHovered ? 'greeting' : 'idle'} isHovered={isHovered} />
               </div>
 
               {/* Tooltip */}
@@ -133,9 +132,7 @@ export const ChatWidget: React.FC = () => {
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-primary/90 via-rose/80 to-gold/70 p-4 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-primary-foreground" />
-              </div>
+              <ChatAvatar size="sm" isTyping={isTyping} />
               <div className="flex-1">
                 <h3 className="font-semibold text-primary-foreground">Sana</h3>
                 <p className="text-xs text-primary-foreground/80">

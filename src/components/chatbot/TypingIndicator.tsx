@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChatAvatar } from './ChatAvatar';
+import { Sparkles } from 'lucide-react';
 
 export const TypingIndicator: React.FC = () => {
   return (
@@ -10,7 +10,9 @@ export const TypingIndicator: React.FC = () => {
       exit={{ opacity: 0, y: -10 }}
       className="flex gap-3"
     >
-      <ChatAvatar size="sm" isTyping />
+      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose to-primary flex items-center justify-center shadow-lg">
+        <Sparkles className="w-6 h-6 text-primary-foreground" />
+      </div>
       
       <div className="bg-gradient-to-br from-rose/20 to-primary/10 border border-rose/30 rounded-2xl p-4 shadow-md">
         <div className="flex items-center gap-1.5">

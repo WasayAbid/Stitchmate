@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Send, Sparkles, Lightbulb, Heart, Star } from 'lucide-react';
+import { ArrowLeft, Send, Sparkles, Lightbulb, Heart, Star, MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useDesign } from '@/contexts/DesignContext';
-import { ChatAvatar } from '@/components/chatbot/ChatAvatar';
 import { ChatMessage } from '@/components/chatbot/ChatMessage';
 import { TypingIndicator } from '@/components/chatbot/TypingIndicator';
 import { generateMockResponse } from '@/components/chatbot/mockResponses';
@@ -115,7 +114,13 @@ const ChatbotAssistant: React.FC = () => {
                 transition={{ duration: 2, repeat: Infinity }}
               />
               <div className="relative p-1 rounded-full bg-gradient-to-br from-primary via-rose to-gold">
-                <ChatAvatar size="xl" mood={isTyping ? 'thinking' : isHovered ? 'greeting' : 'happy'} isTyping={isTyping} isHovered={isHovered} />
+                <motion.div 
+                  className="w-20 h-20 rounded-full bg-gradient-to-br from-rose to-primary flex items-center justify-center shadow-xl"
+                  animate={{ scale: isHovered ? 1.05 : 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <MessageCircle className="w-10 h-10 text-primary-foreground" />
+                </motion.div>
               </div>
             </motion.div>
             <div>

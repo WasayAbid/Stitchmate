@@ -90,10 +90,10 @@ const ChatbotAssistant: React.FC = () => {
       <div className="absolute top-0 right-0 w-96 h-96 bg-rose/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-lavender/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
-      <div className="relative z-10 space-y-6 p-6">
+      className="relative z-10 space-y-6 p-6 pt-14"
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-4"
         >

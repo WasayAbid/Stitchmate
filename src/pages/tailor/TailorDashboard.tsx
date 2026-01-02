@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Package, DollarSign, Star, TrendingUp, ArrowRight, Clock } from 'lucide-react';
+import { Package, DollarSign, Star, TrendingUp, ArrowRight, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatedCard, AnimatedCardContent, AnimatedCardHeader, AnimatedCardTitle } from '@/components/ui/AnimatedCard';
 import { useAuth } from '@/contexts/AuthContext';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 /**
  * TailorDashboard - Main overview page for tailors
  */
 const TailorDashboard: React.FC = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, isDemoMode, tailorApplication, role } = useAuth();
 
   const stats = [
     { label: 'Pending Orders', value: 12, icon: Package, color: 'from-primary to-rose', trend: '+3' },
@@ -35,6 +36,28 @@ const TailorDashboard: React.FC = () => {
 
   return (
     <div className="space-y-8">
+      {/* Demo Mode Banner */}
+      {isDemoMode && tailorApplication && (
+        <Alert className="bg-amber-500/10 border-amber-500/20">
+          <AlertTriangle className="h-5 w-5 text-amber-500" />
+          <AlertTitle className="text-lg font-semibold">Demo Mode Active</AlertTitle>
+          <AlertDescription className="text-muted-foreground mt-2">
+            You are currently viewing the Tailor Dashboard in demo mode. Your application is <span className="font-semibold text-amber-600">under review</span> by our admin team. Full features and real order management will be activated once your application is approved.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Approved Account Banner */}
+      {role === 'tailor' && tailorApplication?.status === 'approved' && (
+        <Alert className="bg-green-500/10 border-green-500/20">
+          <CheckCircle className="h-5 w-5 text-green-500" />
+          <AlertTitle className="text-lg font-semibold">Account Approved</AlertTitle>
+          <AlertDescription className="text-muted-foreground mt-2">
+            Congratulations! Your tailor application has been approved. You now have full access to all features and can start accepting orders.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Welcome */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-secondary/30 via-mint/20 to-gold/20 p-8">
         <div className="relative z-10">

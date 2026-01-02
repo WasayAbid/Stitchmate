@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
  * TailorLayout - Dashboard layout for tailors
  */
 const TailorLayout: React.FC = () => {
-  const { user, profile, role, isAuthenticated, isLoading, logout } = useAuth();
+  const { user, profile, role, isDemoMode, isAuthenticated, isLoading, logout } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
 
@@ -24,7 +24,8 @@ const TailorLayout: React.FC = () => {
     );
   }
 
-  if (!isAuthenticated || role !== 'tailor') {
+  // Allow access if user is authenticated AND (is a tailor OR in demo mode)
+  if (!isAuthenticated || (role !== 'tailor' && !isDemoMode)) {
     return <Navigate to="/auth" replace />;
   }
 

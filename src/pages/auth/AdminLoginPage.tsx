@@ -14,7 +14,7 @@ const adminLoginSchema = z.object({
 });
 
 const AdminLoginPage = () => {
-  const { login, isAuthenticated, role, isLoading } = useAuth();
+  const { adminLogin, isAuthenticated, role, isLoading } = useAuth();
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -52,14 +52,14 @@ const AdminLoginPage = () => {
     }
 
     setIsSubmitting(true);
-    
-    const { error } = await login(formData.email, formData.password);
-    
+
+    const { error } = await adminLogin(formData.email, formData.password);
+
     if (error) {
       toast.error(error);
       setIsSubmitting(false);
     }
-    // Role check and redirect will happen in useEffect after role is loaded
+    // Redirect will happen in useEffect after role is loaded
   };
 
   if (isLoading) {

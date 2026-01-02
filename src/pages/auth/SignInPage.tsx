@@ -14,9 +14,9 @@ const signInSchema = z.object({
 });
 
 const SignInPage = () => {
-  const { login, isAuthenticated, role, isLoading } = useAuth();
+  const { login, isAuthenticated, role, isDemoMode, isLoading } = useAuth();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,10 +26,20 @@ const SignInPage = () => {
   // Redirect authenticated users to their dashboard
   useEffect(() => {
     if (isAuthenticated && !isLoading && role) {
-      const dashboardPath = role === 'admin' ? '/admin' : role === 'tailor' ? '/tailor' : '/dashboard';
+      let dashboardPath = '/dashboard';
+
+      if (role === 'admin') {
+        dashboardPath = '/admin';
+      } else if (role === 'tailor') {
+        dashboardPath = '/tailor';
+      } else if (isDemoMode) {
+        // User with pending tailor application - allow demo access
+        dashboardPath = '/tailor';
+      }
+
       navigate(dashboardPath, { replace: true });
     }
-  }, [isAuthenticated, isLoading, role, navigate]);
+  }, [isAuthenticated, isLoading, role, isDemoMode, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

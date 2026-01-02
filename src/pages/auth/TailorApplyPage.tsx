@@ -182,20 +182,56 @@ const TailorApplyPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/30 to-background p-4 relative overflow-hidden">
         <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl animate-pulse" />
-        
-        <GlassmorphicCard className="w-full max-w-md p-8 text-center relative z-10">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-amber-500/10 rounded-full mb-6">
-            <Clock className="w-10 h-10 text-amber-500" />
+
+        <GlassmorphicCard className="w-full max-w-xl p-8 relative z-10">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/10 rounded-full mb-4">
+              <Check className="w-10 h-10 text-green-500" />
+            </div>
+            <h1 className="text-3xl font-bold text-foreground mb-3">Application Submitted Successfully</h1>
+            <p className="text-muted-foreground text-lg mb-2">
+              Your application has been submitted and is under review by the admin.
+            </p>
+            <p className="text-sm text-muted-foreground mb-6">
+              We typically review applications within 1-2 business days.
+            </p>
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-3">Application Pending</h1>
-          <p className="text-muted-foreground mb-6">
-            Your tailor application is under review. We'll notify you via email once it's been processed. This usually takes 1-2 business days.
-          </p>
-          <Link to="/">
-            <Button className="w-full">
+
+          <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-6 mb-6">
+            <div className="flex items-start gap-3">
+              <Clock className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">Demo Access Available</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  While your application is being reviewed, you can explore the Tailor Dashboard in demo mode. Full features will be activated once approved by admin.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <Button
+              className="w-full h-12 text-base font-semibold"
+              onClick={() => navigate('/tailor')}
+            >
+              Access Demo Dashboard
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full h-12"
+              onClick={() => navigate('/')}
+            >
               Back to Home
             </Button>
-          </Link>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-border">
+            <p className="text-xs text-center text-muted-foreground">
+              You will receive an email notification once your application has been reviewed.
+            </p>
+          </div>
         </GlassmorphicCard>
       </div>
     );

@@ -120,22 +120,31 @@ const TailorApplyPage = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       // First, create the user account
       const { error: signupError } = await signup(formData.name, formData.email, formData.password);
-      
+
       if (signupError) {
         toast.error(signupError);
         setIsSubmitting(false);
         return;
       }
 
-      // Wait for auth to complete and get user
-      const { data: { session } } = await supabase.auth.getSession();
-      
+      // Wait a bit for auth state to update, then get session with retries
+      let session = null;
+      let retries = 0;
+      const maxRetries = 5;
+
+      while (!session && retries < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        session = currentSession;
+        retries++;
+      }
+
       if (!session?.user) {
-        toast.error('Failed to create account. Please try again.');
+        toast.error('Account created but session not available. Please sign in to complete your application.');
         setIsSubmitting(false);
         return;
       }
@@ -155,7 +164,7 @@ const TailorApplyPage = () => {
 
       if (applicationError) {
         console.error('Application error:', applicationError);
-        toast.error('Failed to submit application. Please try again.');
+        toast.error(`Failed to submit application: ${applicationError.message}`);
         setIsSubmitting(false);
         return;
       }

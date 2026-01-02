@@ -90,25 +90,26 @@ const ChatbotAssistant: React.FC = () => {
       <div className="absolute top-0 right-0 w-96 h-96 bg-rose/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-lavender/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
-      className="relative z-10 space-y-6 p-6 pt-14"
+      <div className="relative z-10 space-y-6 p-6 pt-20" style={{ overflow: 'visible' }}>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-4"
+          style={{ overflow: 'visible' }}
         >
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4" style={{ overflow: 'visible' }}>
             <motion.div
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              className="relative p-4"
+              className="relative p-6"
               style={{ overflow: 'visible' }}
             >
               <motion.div
-                className="absolute inset-2 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
+                className="absolute inset-3 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
                 animate={{
                   scale: [1, 1.1, 1],
                   opacity: [0.4, 0.6, 0.4],

@@ -80,17 +80,18 @@ export const ChatWidget: React.FC = () => {
             className="fixed bottom-6 right-6 z-50"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            style={{ overflow: 'visible' }}
           >
             <motion.button
               onClick={() => setIsOpen(true)}
-              className="relative group p-6"
+              className="relative group p-8"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{ overflow: 'visible' }}
             >
               {/* Glow ring */}
               <motion.div
-                className="absolute inset-4 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
+                className="absolute inset-5 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
                 animate={{
                   scale: [1, 1.2, 1],
                   opacity: [0.5, 0.8, 0.5],

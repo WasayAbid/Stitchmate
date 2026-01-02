@@ -7,7 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { DesignProvider } from "@/contexts/DesignContext";
 
 // Pages
-import Index from "./pages/Index";
+import LandingPage from "./pages/LandingPage";
 import NotFound from "./pages/NotFound";
 
 // Auth Pages
@@ -52,13 +52,13 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<LandingPage />} />
               
               {/* Auth Routes */}
-              <Route path="/auth" element={<SignInPage />} />
+              <Route path="/signin" element={<SignInPage />} />
               <Route path="/signup" element={<SignUpPage />} />
-              <Route path="/tailor-apply" element={<TailorApplyPage />} />
-              <Route path="/admin-login" element={<AdminLoginPage />} />
+              <Route path="/tailor/apply" element={<TailorApplyPage />} />
+              <Route path="/admin/login" element={<AdminLoginPage />} />
               
               {/* User Dashboard Routes */}
               <Route path="/dashboard" element={<UserLayout />}>

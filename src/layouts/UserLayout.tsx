@@ -20,8 +20,8 @@ const UserLayout: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#8B1538]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FFD700]"></div>
       </div>
     );
   }
@@ -42,33 +42,30 @@ const UserLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-[#8B1538] flex">
       <aside
         className={cn(
-          "fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-300",
+          "fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-gradient-to-b from-[#6B0F2D] to-[#5A0A1F] border-r border-[#FFD700]/20 transition-all duration-300 shadow-2xl",
           sidebarOpen ? "w-64" : "w-20"
         )}
       >
-        {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-[#FFD700]/20">
           <Link to="/dashboard" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-gold flex items-center justify-center shadow-lg">
-              <Sparkles className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C41E3A] to-[#FFD700] flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
+              <Sparkles className="w-5 h-5 text-white" />
             </div>
             {sidebarOpen && (
-              <span className="font-bold text-lg text-gradient animate-slide-in-right">StichMate</span>
+              <span className="font-bold text-lg text-[#FFD700] animate-slide-in-right">StitchMate</span>
             )}
           </Link>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg hover:bg-sidebar-accent transition-colors"
+            className="p-2 rounded-lg hover:bg-[#8B1538]/50 transition-colors text-[#FFD700]"
           >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
@@ -80,8 +77,8 @@ const UserLayout: React.FC = () => {
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300",
                   isActive
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-lg shadow-primary/20"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:translate-x-1"
+                    ? "bg-gradient-to-r from-[#C41E3A] to-[#A31D45] text-white shadow-lg shadow-[#FFD700]/20 border border-[#FFD700]/30"
+                    : "text-[#FFD700]/80 hover:bg-[#8B1538]/50 hover:text-[#FFD700] hover:translate-x-1 hover:border hover:border-[#FFD700]/20"
                 )}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
@@ -91,16 +88,15 @@ const UserLayout: React.FC = () => {
           })}
         </nav>
 
-        {/* User Section */}
-        <div className="p-4 border-t border-sidebar-border">
-          <div className={cn("flex items-center gap-3", !sidebarOpen && "justify-center")}>
-            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-              <User className="w-5 h-5 text-primary" />
+        <div className="p-4 border-t border-[#FFD700]/20">
+          <div className={cn("flex items-center gap-3 p-3 rounded-xl bg-[#8B1538]/50 border border-[#FFD700]/20", !sidebarOpen && "justify-center")}>
+            <div className="w-10 h-10 rounded-full bg-[#FFD700]/20 flex items-center justify-center border border-[#FFD700]/30">
+              <User className="w-5 h-5 text-[#FFD700]" />
             </div>
             {sidebarOpen && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{profile?.full_name || user?.email}</p>
-                <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                <p className="text-sm font-bold text-white truncate">{profile?.full_name || user?.email}</p>
+                <p className="text-xs text-[#FFD700]/70 truncate">{user?.email}</p>
               </div>
             )}
           </div>
@@ -108,7 +104,7 @@ const UserLayout: React.FC = () => {
             variant="ghost"
             size="sm"
             onClick={logout}
-            className={cn("mt-3 text-destructive hover:text-destructive hover:bg-destructive/10", sidebarOpen ? "w-full" : "w-full justify-center")}
+            className={cn("mt-3 text-[#FF6666] hover:text-[#FF4444] hover:bg-[#FF4444]/10 border border-[#FF6666]/30", sidebarOpen ? "w-full" : "w-full justify-center")}
           >
             <LogOut className="w-4 h-4" />
             {sidebarOpen && <span className="ml-2">Logout</span>}

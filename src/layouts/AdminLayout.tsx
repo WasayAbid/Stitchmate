@@ -18,8 +18,8 @@ const AdminLayout: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#8B1538]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FFD700]"></div>
       </div>
     );
   }
@@ -39,36 +39,33 @@ const AdminLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-[#8B1538] flex">
       <aside
         className={cn(
-          "fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-gradient-to-b from-gold/10 to-sidebar border-r border-sidebar-border transition-all duration-300",
+          "fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-gradient-to-b from-[#5A0A1F] to-[#6B0F2D] border-r border-[#FFD700]/20 transition-all duration-300 shadow-2xl",
           sidebarOpen ? "w-64" : "w-20"
         )}
       >
-        {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-[#FFD700]/20">
           <Link to="/admin" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-accent flex items-center justify-center shadow-lg">
-              <Shield className="w-5 h-5 text-accent-foreground" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FFD700] to-[#FFA500] flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
+              <Shield className="w-5 h-5 text-[#8B1538]" />
             </div>
             {sidebarOpen && (
               <div className="animate-slide-in-right">
-                <span className="font-bold text-lg">StichMate</span>
-                <p className="text-xs text-muted-foreground">Admin Panel</p>
+                <span className="font-bold text-lg text-[#FFD700]">StitchMate</span>
+                <p className="text-xs text-[#FFD700]/70">Admin Panel</p>
               </div>
             )}
           </Link>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg hover:bg-sidebar-accent transition-colors"
+            className="p-2 rounded-lg hover:bg-[#8B1538]/50 transition-colors text-[#FFD700]"
           >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
@@ -80,8 +77,8 @@ const AdminLayout: React.FC = () => {
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300",
                   isActive
-                    ? "bg-gold text-accent-foreground shadow-lg shadow-gold/30"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:translate-x-1"
+                    ? "bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-[#8B1538] shadow-lg shadow-[#FFD700]/20 border border-[#FFD700]/50 font-bold"
+                    : "text-[#FFD700]/80 hover:bg-[#8B1538]/50 hover:text-[#FFD700] hover:translate-x-1 hover:border hover:border-[#FFD700]/20"
                 )}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
@@ -91,16 +88,15 @@ const AdminLayout: React.FC = () => {
           })}
         </nav>
 
-        {/* User Section */}
-        <div className="p-4 border-t border-sidebar-border">
-          <div className={cn("flex items-center gap-3", !sidebarOpen && "justify-center")}>
-            <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
-              <Shield className="w-5 h-5 text-gold" />
+        <div className="p-4 border-t border-[#FFD700]/20">
+          <div className={cn("flex items-center gap-3 p-3 rounded-xl bg-[#8B1538]/50 border border-[#FFD700]/20", !sidebarOpen && "justify-center")}>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFD700] to-[#FFA500] flex items-center justify-center border border-[#FFD700]/50 shadow-lg">
+              <Shield className="w-5 h-5 text-[#8B1538]" />
             </div>
             {sidebarOpen && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{profile?.full_name || user?.email}</p>
-                <p className="text-xs text-gold">Administrator</p>
+                <p className="text-sm font-bold text-white truncate">{profile?.full_name || user?.email}</p>
+                <p className="text-xs text-[#FFD700]/70">Administrator</p>
               </div>
             )}
           </div>
@@ -108,7 +104,7 @@ const AdminLayout: React.FC = () => {
             variant="ghost"
             size="sm"
             onClick={logout}
-            className={cn("mt-3 text-destructive hover:text-destructive hover:bg-destructive/10", sidebarOpen ? "w-full" : "w-full justify-center")}
+            className={cn("mt-3 text-[#FF6666] hover:text-[#FF4444] hover:bg-[#FF4444]/10 border border-[#FF6666]/30", sidebarOpen ? "w-full" : "w-full justify-center")}
           >
             <LogOut className="w-4 h-4" />
             {sidebarOpen && <span className="ml-2">Logout</span>}

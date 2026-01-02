@@ -9,98 +9,208 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-[#8B1538] relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1920 1080">
           <defs>
-            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{ stopColor: '#8B1538', stopOpacity: 1 }} />
-              <stop offset="50%" style={{ stopColor: '#A31D45', stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: '#8B1538', stopOpacity: 1 }} />
-            </linearGradient>
+            <filter id="blur1">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="0" />
+            </filter>
           </defs>
 
           <motion.path
-            d="M0,300 Q400,100 800,300 T1600,300 L1600,0 L0,0 Z"
-            fill="#6B0F2D"
-            initial={{ d: "M0,300 Q400,100 800,300 T1600,300 L1600,0 L0,0 Z" }}
+            d="M0,800 Q300,600 600,700 T1200,750 T1920,800 L1920,1080 L0,1080 Z"
+            fill="#5A0A1F"
             animate={{
               d: [
-                "M0,300 Q400,100 800,300 T1600,300 L1600,0 L0,0 Z",
-                "M0,250 Q400,150 800,250 T1600,250 L1600,0 L0,0 Z",
-                "M0,300 Q400,100 800,300 T1600,300 L1600,0 L0,0 Z"
+                "M0,800 Q300,600 600,700 T1200,750 T1920,800 L1920,1080 L0,1080 Z",
+                "M0,750 Q300,650 600,720 T1200,700 T1920,780 L1920,1080 L0,1080 Z",
+                "M0,800 Q300,600 600,700 T1200,750 T1920,800 L1920,1080 L0,1080 Z"
               ]
             }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
           />
 
           <motion.path
-            d="M0,500 Q600,300 1200,500 T2400,500 L2400,0 L0,0 Z"
-            fill="#A31D45"
-            opacity="0.7"
-            initial={{ d: "M0,500 Q600,300 1200,500 T2400,500 L2400,0 L0,0 Z" }}
+            d="M0,600 Q400,400 800,550 T1600,600 T1920,650 L1920,1080 L0,1080 Z"
+            fill="#6B0F2D"
+            opacity="0.9"
             animate={{
               d: [
-                "M0,500 Q600,300 1200,500 T2400,500 L2400,0 L0,0 Z",
-                "M0,450 Q600,350 1200,450 T2400,450 L2400,0 L0,0 Z",
-                "M0,500 Q600,300 1200,500 T2400,500 L2400,0 L0,0 Z"
+                "M0,600 Q400,400 800,550 T1600,600 T1920,650 L1920,1080 L0,1080 Z",
+                "M0,650 Q400,450 800,600 T1600,650 T1920,700 L1920,1080 L0,1080 Z",
+                "M0,600 Q400,400 800,550 T1600,600 T1920,650 L1920,1080 L0,1080 Z"
               ]
             }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
 
-          <motion.ellipse
-            cx="200"
-            cy="400"
-            rx="300"
-            ry="200"
-            fill="#D4A017"
-            opacity="0.15"
+          <motion.path
+            d="M0,450 Q500,250 1000,400 T2000,500 L1920,1080 L0,1080 Z"
+            fill="#7D1432"
+            opacity="0.85"
             animate={{
-              cx: [200, 250, 200],
-              cy: [400, 350, 400],
-              rx: [300, 350, 300],
+              d: [
+                "M0,450 Q500,250 1000,400 T2000,500 L1920,1080 L0,1080 Z",
+                "M0,500 Q500,300 1000,450 T2000,550 L1920,1080 L0,1080 Z",
+                "M0,480 Q500,280 1000,420 T2000,520 L1920,1080 L0,1080 Z",
+                "M0,450 Q500,250 1000,400 T2000,500 L1920,1080 L0,1080 Z"
+              ]
             }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          />
+
+          <motion.path
+            d="M0,350 Q600,150 1200,300 T1920,400 L1920,1080 L0,1080 Z"
+            fill="#A31D45"
+            opacity="0.7"
+            animate={{
+              d: [
+                "M0,350 Q600,150 1200,300 T1920,400 L1920,1080 L0,1080 Z",
+                "M0,380 Q600,180 1200,330 T1920,430 L1920,1080 L0,1080 Z",
+                "M0,400 Q600,200 1200,350 T1920,450 L1920,1080 L0,1080 Z",
+                "M0,350 Q600,150 1200,300 T1920,400 L1920,1080 L0,1080 Z"
+              ]
+            }}
+            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           />
 
           <motion.ellipse
-            cx="1400"
+            cx="-200"
+            cy="300"
+            rx="600"
+            ry="450"
+            fill="#D4A017"
+            opacity="0.35"
+            animate={{
+              cx: [-200, -100, -150, -200],
+              cy: [300, 250, 280, 300],
+              rx: [600, 650, 620, 600],
+              ry: [450, 500, 470, 450],
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          <motion.ellipse
+            cx="400"
+            cy="-100"
+            rx="500"
+            ry="400"
+            fill="#E6B31E"
+            opacity="0.25"
+            animate={{
+              cx: [400, 500, 450, 400],
+              cy: [-100, -50, -80, -100],
+              rx: [500, 550, 520, 500],
+              ry: [400, 450, 420, 400],
+            }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          />
+
+          <motion.ellipse
+            cx="1600"
             cy="200"
-            rx="250"
-            ry="180"
+            rx="550"
+            ry="400"
             fill="#D4A017"
-            opacity="0.12"
+            opacity="0.3"
             animate={{
-              cx: [1400, 1350, 1400],
-              cy: [200, 250, 200],
-              ry: [180, 220, 180],
+              cx: [1600, 1700, 1650, 1600],
+              cy: [200, 150, 180, 200],
+              rx: [550, 600, 570, 550],
+              ry: [400, 450, 420, 400],
             }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          />
+
+          <motion.path
+            d="M-500,200 Q-200,100 100,180 Q400,260 700,200 Q1000,140 1300,200 Q1600,260 1920,200 L1920,0 L-500,0 Z"
+            fill="#B8860B"
+            opacity="0.2"
+            animate={{
+              d: [
+                "M-500,200 Q-200,100 100,180 Q400,260 700,200 Q1000,140 1300,200 Q1600,260 1920,200 L1920,0 L-500,0 Z",
+                "M-500,250 Q-200,150 100,230 Q400,310 700,250 Q1000,190 1300,250 Q1600,310 1920,250 L1920,0 L-500,0 Z",
+                "M-500,230 Q-200,130 100,210 Q400,290 700,230 Q1000,170 1300,230 Q1600,290 1920,230 L1920,0 L-500,0 Z",
+                "M-500,200 Q-200,100 100,180 Q400,260 700,200 Q1000,140 1300,200 Q1600,260 1920,200 L1920,0 L-500,0 Z"
+              ]
+            }}
+            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          />
+
+          <motion.ellipse
+            cx="1200"
+            cy="600"
+            rx="450"
+            ry="350"
+            fill="#C49A15"
+            opacity="0.18"
+            animate={{
+              cx: [1200, 1300, 1250, 1200],
+              cy: [600, 550, 580, 600],
+              rx: [450, 500, 470, 450],
+              ry: [350, 400, 370, 350],
+            }}
+            transition={{ duration: 19, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          />
+
+          <motion.path
+            d="M0,900 Q480,750 960,850 T1920,900 L1920,1080 L0,1080 Z"
+            fill="#4A0818"
+            opacity="0.6"
+            animate={{
+              d: [
+                "M0,900 Q480,750 960,850 T1920,900 L1920,1080 L0,1080 Z",
+                "M0,920 Q480,770 960,870 T1920,920 L1920,1080 L0,1080 Z",
+                "M0,900 Q480,750 960,850 T1920,900 L1920,1080 L0,1080 Z"
+              ]
+            }}
+            transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
           />
         </svg>
 
         <motion.div
-          className="absolute bottom-0 left-0 w-full h-1/2"
+          className="absolute -bottom-32 -left-32 w-[800px] h-[800px] rounded-full"
           style={{
-            background: 'radial-gradient(ellipse at bottom left, rgba(212, 160, 23, 0.2) 0%, transparent 60%)',
+            background: 'radial-gradient(circle, rgba(212, 160, 23, 0.4) 0%, rgba(212, 160, 23, 0.2) 40%, transparent 70%)',
           }}
           animate={{
-            opacity: [0.3, 0.5, 0.3],
+            scale: [1, 1.2, 1.1, 1],
+            x: [0, 50, 20, 0],
+            y: [0, -30, -10, 0],
+            opacity: [0.4, 0.6, 0.5, 0.4],
           }}
-          transition={{ duration: 6, repeat: Infinity }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <motion.div
-          className="absolute top-0 right-0 w-1/2 h-1/2"
+          className="absolute top-0 -right-48 w-[900px] h-[700px] rounded-full"
           style={{
-            background: 'radial-gradient(ellipse at top right, rgba(212, 160, 23, 0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(230, 179, 30, 0.35) 0%, rgba(212, 160, 23, 0.15) 50%, transparent 75%)',
           }}
           animate={{
-            opacity: [0.2, 0.4, 0.2],
+            scale: [1, 1.15, 1.05, 1],
+            x: [0, -40, -15, 0],
+            y: [0, 40, 15, 0],
+            opacity: [0.35, 0.5, 0.4, 0.35],
           }}
-          transition={{ duration: 8, repeat: Infinity, delay: 1 }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         />
 
-        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-[#5A0A1F] to-transparent opacity-60" />
+        <motion.div
+          className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(196, 154, 21, 0.25) 0%, transparent 60%)',
+          }}
+          animate={{
+            scale: [1, 1.3, 1.1, 1],
+            x: [0, 60, 30, 0],
+            y: [0, -50, -20, 0],
+            opacity: [0.25, 0.4, 0.3, 0.25],
+          }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+
+        <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-[#4A0818] via-[#5A0A1F]/80 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-[#8B1538] to-transparent opacity-50" />
       </div>
 
       <nav className="relative z-50 px-12 py-8">

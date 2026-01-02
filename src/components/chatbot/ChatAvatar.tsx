@@ -59,7 +59,7 @@ export const ChatAvatar: React.FC<ChatAvatarProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ overflow: 'visible' }}>
       {/* Speech Bubble */}
       <AnimatePresence>
         {showSpeechBubble && speechText && (
@@ -77,7 +77,7 @@ export const ChatAvatar: React.FC<ChatAvatarProps> = ({
 
       <motion.div
         className="relative cursor-pointer"
-        style={{ width: config.container, height: config.container }}
+        style={{ width: config.container, height: config.container, overflow: 'visible' }}
         animate={{
           y: currentMood === 'excited' ? [0, -6, 0] : isHovered ? [0, -3, 0] : 0,
           rotate: currentMood === 'greeting' || currentMood === 'farewell' ? [0, -4, 4, -4, 0] : 0,
@@ -475,7 +475,7 @@ export const ChatAvatar: React.FC<ChatAvatarProps> = ({
                 style={{ top: '65%', width: config.container * 0.2, height: config.container * 0.12 }}
               >
                 {/* Smile variations */}
-                {(currentMood === 'idle' || currentMood === 'greeting' || currentMood === 'farewell') && !isTyping && (
+                {currentMood === 'idle' && !isTyping && (
                   <motion.div
                     className="absolute w-full rounded-b-full"
                     style={{
@@ -487,11 +487,25 @@ export const ChatAvatar: React.FC<ChatAvatarProps> = ({
                   />
                 )}
 
+                {(currentMood === 'greeting' || currentMood === 'farewell') && !isTyping && (
+                  <motion.div
+                    className="absolute w-full rounded-b-full overflow-hidden"
+                    style={{ height: '75%', background: '#D4737A' }}
+                    animate={{ scaleY: [1, 1.08, 1], scaleX: [1, 1.05, 1] }}
+                    transition={{ duration: 0.6, repeat: Infinity }}
+                  >
+                    <div
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full"
+                      style={{ width: '45%', height: '35%', background: '#E85A6B' }}
+                    />
+                  </motion.div>
+                )}
+
                 {currentMood === 'happy' && (
                   <motion.div
                     className="absolute w-full rounded-b-full overflow-hidden"
-                    style={{ height: '80%', background: '#D4737A' }}
-                    animate={{ scaleY: [1, 1.05, 1] }}
+                    style={{ height: '85%', background: '#D4737A' }}
+                    animate={{ scaleY: [1, 1.08, 1], scaleX: [1, 1.05, 1] }}
                     transition={{ duration: 0.8, repeat: Infinity }}
                   >
                     <div

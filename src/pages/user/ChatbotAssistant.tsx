@@ -104,10 +104,11 @@ const ChatbotAssistant: React.FC = () => {
             <motion.div
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              className="relative"
+              className="relative p-4"
+              style={{ overflow: 'visible' }}
             >
               <motion.div
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
+                className="absolute inset-2 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
                 animate={{
                   scale: [1, 1.1, 1],
                   opacity: [0.4, 0.6, 0.4],
@@ -115,7 +116,7 @@ const ChatbotAssistant: React.FC = () => {
                 transition={{ duration: 2, repeat: Infinity }}
               />
               <div className="relative p-1 rounded-full bg-gradient-to-br from-primary via-rose to-gold">
-                <ChatAvatar size="xl" mood={isTyping ? 'thinking' : isHovered ? 'greeting' : 'happy'} isTyping={isTyping} isHovered={isHovered} />
+                <ChatAvatar size="xl" mood={isTyping ? 'thinking' : isHovered ? 'excited' : 'greeting'} isTyping={isTyping} isHovered={isHovered} />
               </div>
             </motion.div>
             <div>

@@ -83,22 +83,23 @@ export const ChatWidget: React.FC = () => {
           >
             <motion.button
               onClick={() => setIsOpen(true)}
-              className="relative group"
+              className="relative group p-6"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ overflow: 'visible' }}
             >
               {/* Glow ring */}
               <motion.div
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
+                className="absolute inset-4 rounded-full bg-gradient-to-r from-primary via-rose to-gold blur-md"
                 animate={{
                   scale: [1, 1.2, 1],
                   opacity: [0.5, 0.8, 0.5],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              
+
               <div className="relative p-1 rounded-full bg-gradient-to-br from-primary via-rose to-gold">
-                <ChatAvatar size="md" mood={isHovered ? 'greeting' : 'idle'} isHovered={isHovered} />
+                <ChatAvatar size="md" mood={isHovered ? 'excited' : 'happy'} isHovered={isHovered} />
               </div>
 
               {/* Tooltip */}
@@ -108,7 +109,7 @@ export const ChatWidget: React.FC = () => {
                     initial={{ opacity: 0, x: 10, scale: 0.9 }}
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: 10, scale: 0.9 }}
-                    className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-card border border-border rounded-xl px-4 py-2 shadow-lg whitespace-nowrap"
+                    className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-card border border-border rounded-xl px-4 py-2 shadow-lg whitespace-nowrap z-10"
                   >
                     <p className="text-sm font-medium text-foreground">Ask me anything! 💕</p>
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 w-2 h-2 rotate-45 bg-card border-r border-t border-border" />
@@ -132,7 +133,7 @@ export const ChatWidget: React.FC = () => {
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-primary/90 via-rose/80 to-gold/70 p-4 flex items-center gap-3">
-              <ChatAvatar size="sm" isTyping={isTyping} />
+              <ChatAvatar size="sm" mood={isTyping ? 'thinking' : 'happy'} isTyping={isTyping} />
               <div className="flex-1">
                 <h3 className="font-semibold text-primary-foreground">Sana</h3>
                 <p className="text-xs text-primary-foreground/80">

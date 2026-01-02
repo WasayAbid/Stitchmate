@@ -55,10 +55,10 @@ const App = () => (
               <Route path="/" element={<LandingPage />} />
               
               {/* Auth Routes */}
-              <Route path="/signin" element={<SignInPage />} />
+              <Route path="/auth" element={<SignInPage />} />
               <Route path="/signup" element={<SignUpPage />} />
-              <Route path="/tailor/apply" element={<TailorApplyPage />} />
-              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/tailor-apply" element={<TailorApplyPage />} />
+              <Route path="/auth/admin" element={<AdminLoginPage />} />
               
               {/* User Dashboard Routes */}
               <Route path="/dashboard" element={<UserLayout />}>

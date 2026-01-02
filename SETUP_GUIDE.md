@@ -71,7 +71,7 @@ WHERE u.email = 'admin@stitchmate.com';
 ### A. Test Tailor Application (Demo Mode)
 
 1. **Apply as Tailor**:
-   - Go to `/auth/apply-tailor`
+   - Go to `/tailor-apply`
    - Fill in Step 1: Account Details
    - Fill in Step 2: Shop Information
    - Submit application
